@@ -4,8 +4,10 @@ bounds = null;
 
 shooter = null;
 balls = [];
+bullets = [];
 
 var BALL_SPEED = 2;
+var BULLET_SPEED = 10;
 var BALL_SPAWN_SPEED = 2000;
 
 loadGame = function() {
@@ -79,15 +81,34 @@ tick = function()
             stage.removeChild(animation);
         }
     }
+
+    for(x in bullets)
+    {
+        var animation = bullets[x];
+        animation.x += BULLET_SPEED;
+
+        if(animation.x > bounds.width)
+        {
+            bullets.splice(x, 1);
+            stage.removeChild(animation);
+        }
+    }
     stage.update();
 };
 
 launchBullet = function()
 {
     var originX = 10;
-    var originY = shooter.y + 24;
+    var originY = shooter.y + 20;
 
-    
+    var bulletAnimation = getBulletBitmap();
+    bulletAnimation.x = originX;
+    bulletAnimation.y = originY;
+
+    stage.addChild(bulletAnimation);
+
+    var bulletId = UID.get();
+    bullets[bulletId] = bulletAnimation;
 }
 
 clickCanvas = function(/**MouseEvent*/ e)
@@ -136,6 +157,15 @@ getBallSheet = function()
     ballSpriteSheet.getAnimation("blink").next = "blink";
     return ballSpriteSheet;
 };
+
+
+getBulletBitmap = function()
+{
+    var bulletImg = new Image();
+    bulletImg.src = "assets/images/bullet.png";
+
+    return new Bitmap(bulletImg);
+}
 
 
 spawnBlueBallAt = function(/**int*/ y)
