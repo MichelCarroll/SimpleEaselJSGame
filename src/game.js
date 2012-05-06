@@ -2,6 +2,7 @@
 stage = null;
 bounds = null;
 
+shooter = null;
 balls = [];
 
 var BALL_SPEED = 2;
@@ -12,6 +13,7 @@ loadGame = function() {
     stage = new Stage(canvas);
     bounds = new Rectangle(0,0,canvas.width, canvas.height);
 
+    registerShooter();
     startSpawningBalls();
 
     stage.onMouseMove = moveCanvas;
@@ -19,6 +21,49 @@ loadGame = function() {
 
     Ticker.setFPS(20);
     Ticker.addListener(window);
+};
+
+registerShooter = function()
+{
+    shooter = new BitmapAnimation(getShooterSheet());
+    shooter.x = 5;
+    shooter.y = bounds.height / 2;
+    shooter.gotoAndPlay("idle");
+
+    stage.addChild(shooter);
+};
+
+getShooterSheet = function()
+{
+    var paddleData =
+    {
+        'images':
+            [
+                'assets/images/paddle1.png',
+                'assets/images/paddle2.png',
+                'assets/images/paddle3.png',
+                'assets/images/paddle4.png',
+                'assets/images/paddle5.png',
+                'assets/images/paddle6.png'
+            ],
+        'frames':
+            [
+                [0,0,20,50,0],
+                [0,0,20,50,1],
+                [0,0,20,50,2],
+                [0,0,20,50,3],
+                [0,0,20,50,4],
+                [0,0,20,50,5]
+            ],
+        "animations": {"shoot": [1,5], "idle": [0]}
+    }
+
+    var shooterSheet = new SpriteSheet(paddleData);
+
+    shooterSheet.getAnimation("shoot").frequency = 2;
+    shooterSheet.getAnimation("shoot").next = "idle";
+
+    return shooterSheet;
 };
 
 tick = function()
@@ -37,14 +82,29 @@ tick = function()
     stage.update();
 };
 
+launchBullet = function()
+{
+    var originX = 10;
+    var originY = shooter.y + 24;
+
+    
+}
+
 clickCanvas = function(/**MouseEvent*/ e)
 {
-
+    if(shooter)
+    {
+        launchBullet();
+        shooter.gotoAndPlay("shoot");
+    }
 };
 
 moveCanvas = function(/**MouseEvent*/ e)
 {
-
+    if(shooter)
+    {
+        shooter.y = e.stageY - 25;
+    }
 };
 
 
