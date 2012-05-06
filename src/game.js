@@ -1,6 +1,7 @@
 
 stage = null;
 bounds = null;
+assetsFolder = '';
 
 shooter = null;
 balls = [];
@@ -11,8 +12,10 @@ var BULLET_SPEED = 10;
 var BALL_SPAWN_SPEED = 2000;
 var COLLISION_RADIUS = 18;
 
-loadGame = function() {
-    var canvas = document.getElementById('main');
+loadGame = function(canvasDivId, assetsPath) {
+    assetsFolder = assetsPath;
+
+    var canvas = document.getElementById(canvasDivId);
     stage = new Stage(canvas);
     bounds = new Rectangle(0,0,canvas.width, canvas.height);
 
@@ -44,12 +47,12 @@ getShooterSheet = function()
     {
         'images':
             [
-                'assets/images/paddle1.png',
-                'assets/images/paddle2.png',
-                'assets/images/paddle3.png',
-                'assets/images/paddle4.png',
-                'assets/images/paddle5.png',
-                'assets/images/paddle6.png'
+                assetsFolder+'images/paddle1.png',
+                assetsFolder+'images/paddle2.png',
+                assetsFolder+'images/paddle3.png',
+                assetsFolder+'images/paddle4.png',
+                assetsFolder+'images/paddle5.png',
+                assetsFolder+'images/paddle6.png'
             ],
         'frames':
             [
@@ -154,10 +157,10 @@ getBallSheet = function()
     {
         'images':
             [
-                'assets/images/blueball1.png',
-                'assets/images/blueball2.png',
-                'assets/images/blueball3.png',
-                'assets/images/blueball4.png'
+                assetsFolder+'images/blueball1.png',
+                assetsFolder+'images/blueball2.png',
+                assetsFolder+'images/blueball3.png',
+                assetsFolder+'images/blueball4.png'
             ],
         'frames':
             [
@@ -180,7 +183,7 @@ getBallSheet = function()
 getBulletBitmap = function()
 {
     var bulletImg = new Image();
-    bulletImg.src = "assets/images/bullet.png";
+    bulletImg.src = assetsFolder+"images/bullet.png";
 
     var bitmap = new Bitmap(bulletImg);
     bitmap.regX = 5;
